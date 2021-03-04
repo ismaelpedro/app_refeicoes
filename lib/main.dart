@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'screens/categories_screen.dart';
+import 'screens/categories_meals.dart';
+import 'utils/app_routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -6,31 +9,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+        accentColor: Colors.amber,
+        fontFamily: 'Raleway',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: TextStyle(
+                fontSize: 20,
+                fontFamily: 'RobotoCondensed',
+              ),
+            ),
+      ),
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      routes: {
+        AppRoutes.HOME: (context) => CategoriesScreen(),
+        AppRoutes.CATEGORIES_MEALS: (context) => CategoriesMeals(),
+      },
     );
   }
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Vamos cozinhar?'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text('Paginação'),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
 }
