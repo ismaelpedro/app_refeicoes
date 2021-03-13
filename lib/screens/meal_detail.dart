@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import '../models/meal.dart';
 
 class MealDetail extends StatelessWidget {
-  Widget _createSectionTitle(BuildContext context, String title) {
+  final Function(Meal) onToggleFavorite;
+  final bool Function(Meal) isFavorite;
+
+  const MealDetail(this.onToggleFavorite, this.isFavorite);
+
+  Widget _createSectionTitle(
+    BuildContext context,
+    String title,
+  ) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Text(
@@ -12,24 +20,25 @@ class MealDetail extends StatelessWidget {
     );
   }
 
-  Widget _createSectionContainer(Widget child) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.all(10),
-      width: 330,
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: child,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final meal = ModalRoute.of(context).settings.arguments as Meal;
+
+    Widget _createSectionContainer(Widget child) {
+      return Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.all(10),
+        width: MediaQuery.of(context).size.width * .8,
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: child,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
@@ -57,7 +66,12 @@ class MealDetail extends StatelessWidget {
                         vertical: 5,
                         horizontal: 10,
                       ),
-                      child: Text(meal.ingredients[index]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(meal.ingredients[index]),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -84,6 +98,10 @@ class MealDetail extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(isFavorite(meal) ? Icons.star : Icons.star_border),
+        onPressed: () => onToggleFavorite(meal),
       ),
     );
   }
